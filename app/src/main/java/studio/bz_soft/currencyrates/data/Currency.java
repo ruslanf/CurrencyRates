@@ -5,51 +5,51 @@ import android.os.Parcelable;
 
 public class Currency implements Parcelable {
 
-    private int Cur_ID;
-    private int Cur_ParentID;
-    private String Cur_Code;
-    private String Cur_Abbreviation;
-    private String Cur_Name;
-    private String Cur_Name_Bel;
-    private String Cur_Name_Eng;
-    private String Cur_QuotName;
-    private String Cur_QuotName_Bel;
-    private String Cur_QuotName_Eng;
-    private String Cur_NameMulti;
-    private String Cur_Name_BelMulti;
-    private String Cur_Name_EngMulti;
-    private int Cur_Scale;
-    private int Cur_Periodicity;    // периодичность установления курса (0 – ежедневно, 1 – ежемесячно)
-    private String Cur_DateStart;
-    private String Cur_DateEnd;
+    private int curID;
+    private int curParentID;
+    private String curCode;
+    private String curAbbreviation;
+    private String curName;
+    private String curNameBel;
+    private String curNameEng;
+    private String curQuotName;
+    private String curQuotNameBel;
+    private String curQuotNameEng;
+    private String curNameMulti;
+    private String curNameBelMulti;
+    private String curNameEngMulti;
+    private int curScale;
+    private int curPeriodicity;    // периодичность установления курса (0 – ежедневно, 1 – ежемесячно)
+    private String curDateStart;
+    private String curDateEnd;
 
-    public Currency(int cur_ID, int cur_ParentID, String cur_Code, String cur_Abbreviation, String cur_Name, String cur_QuotName) {
-        Cur_ID = cur_ID;
-        Cur_ParentID = cur_ParentID;
-        Cur_Code = cur_Code;
-        Cur_Abbreviation = cur_Abbreviation;
-        Cur_Name = cur_Name;
-        Cur_QuotName = cur_QuotName;
+    public Currency(int curID, int curParentID, String curCode, String curAbbreviation, String curName, String curQuotName) {
+        this.curID = curID;
+        this.curParentID = curParentID;
+        this.curCode = curCode;
+        this.curAbbreviation = curAbbreviation;
+        this.curName = curName;
+        this.curQuotName = curQuotName;
     }
 
     protected Currency(Parcel in) {
-        Cur_ID = in.readInt();
-        Cur_ParentID = in.readInt();
-        Cur_Code = in.readString();
-        Cur_Abbreviation = in.readString();
-        Cur_Name = in.readString();
-        Cur_Name_Bel = in.readString();
-        Cur_Name_Eng = in.readString();
-        Cur_QuotName = in.readString();
-        Cur_QuotName_Bel = in.readString();
-        Cur_QuotName_Eng = in.readString();
-        Cur_NameMulti = in.readString();
-        Cur_Name_BelMulti = in.readString();
-        Cur_Name_EngMulti = in.readString();
-        Cur_Scale = in.readInt();
-        Cur_Periodicity = in.readInt();
-        Cur_DateStart = in.readString();
-        Cur_DateEnd = in.readString();
+        curID = in.readInt();
+        curParentID = in.readInt();
+        curCode = in.readString();
+        curAbbreviation = in.readString();
+        curName = in.readString();
+        curNameBel = in.readString();
+        curNameEng = in.readString();
+        curQuotName = in.readString();
+        curQuotNameBel = in.readString();
+        curQuotNameEng = in.readString();
+        curNameMulti = in.readString();
+        curNameBelMulti = in.readString();
+        curNameEngMulti = in.readString();
+        curScale = in.readInt();
+        curPeriodicity = in.readInt();
+        curDateStart = in.readString();
+        curDateEnd = in.readString();
     }
 
     public static final Creator<Currency> CREATOR = new Creator<Currency>() {
@@ -64,140 +64,140 @@ public class Currency implements Parcelable {
         }
     };
 
-    public int getCur_ID() {
-        return Cur_ID;
+    public int getCurID() {
+        return curID;
     }
 
-    public void setCur_ID(int cur_ID) {
-        Cur_ID = cur_ID;
+    public void setCurID(int curID) {
+        this.curID = curID;
     }
 
-    public int getCur_ParentID() {
-        return Cur_ParentID;
+    public int getCurParentID() {
+        return curParentID;
     }
 
-    public void setCur_ParentID(int cur_ParentID) {
-        Cur_ParentID = cur_ParentID;
+    public void setCurParentID(int curParentID) {
+        this.curParentID = curParentID;
     }
 
-    public String getCur_Code() {
-        return Cur_Code;
+    public String getCurCode() {
+        return curCode;
     }
 
-    public void setCur_Code(String cur_Code) {
-        Cur_Code = cur_Code;
+    public void setCurCode(String curCode) {
+        this.curCode = curCode;
     }
 
-    public String getCur_Abbreviation() {
-        return Cur_Abbreviation;
+    public String getCurAbbreviation() {
+        return curAbbreviation;
     }
 
-    public void setCur_Abbreviation(String cur_Abbreviation) {
-        Cur_Abbreviation = cur_Abbreviation;
+    public void setCurAbbreviation(String curAbbreviation) {
+        this.curAbbreviation = curAbbreviation;
     }
 
-    public String getCur_Name() {
-        return Cur_Name;
+    public String getCurName() {
+        return curName;
     }
 
-    public void setCur_Name(String cur_Name) {
-        Cur_Name = cur_Name;
+    public void setCurName(String curName) {
+        this.curName = curName;
     }
 
-    public String getCur_Name_Bel() {
-        return Cur_Name_Bel;
+    public String getCurNameBel() {
+        return curNameBel;
     }
 
-    public void setCur_Name_Bel(String cur_Name_Bel) {
-        Cur_Name_Bel = cur_Name_Bel;
+    public void setCurNameBel(String curNameBel) {
+        this.curNameBel = curNameBel;
     }
 
-    public String getCur_Name_Eng() {
-        return Cur_Name_Eng;
+    public String getCurNameEng() {
+        return curNameEng;
     }
 
-    public void setCur_Name_Eng(String cur_Name_Eng) {
-        Cur_Name_Eng = cur_Name_Eng;
+    public void setCurNameEng(String curNameEng) {
+        this.curNameEng = curNameEng;
     }
 
-    public String getCur_QuotName() {
-        return Cur_QuotName;
+    public String getCurQuotName() {
+        return curQuotName;
     }
 
-    public void setCur_QuotName(String cur_QuotName) {
-        Cur_QuotName = cur_QuotName;
+    public void setCurQuotName(String curQuotName) {
+        this.curQuotName = curQuotName;
     }
 
-    public String getCur_QuotName_Bel() {
-        return Cur_QuotName_Bel;
+    public String getCurQuotNameBel() {
+        return curQuotNameBel;
     }
 
-    public void setCur_QuotName_Bel(String cur_QuotName_Bel) {
-        Cur_QuotName_Bel = cur_QuotName_Bel;
+    public void setCurQuotNameBel(String curQuotNameBel) {
+        this.curQuotNameBel = curQuotNameBel;
     }
 
-    public String getCur_QuotName_Eng() {
-        return Cur_QuotName_Eng;
+    public String getCurQuotNameEng() {
+        return curQuotNameEng;
     }
 
-    public void setCur_QuotName_Eng(String cur_QuotName_Eng) {
-        Cur_QuotName_Eng = cur_QuotName_Eng;
+    public void setCurQuotNameEng(String curQuotNameEng) {
+        this.curQuotNameEng = curQuotNameEng;
     }
 
-    public String getCur_NameMulti() {
-        return Cur_NameMulti;
+    public String getCurNameMulti() {
+        return curNameMulti;
     }
 
-    public void setCur_NameMulti(String cur_NameMulti) {
-        Cur_NameMulti = cur_NameMulti;
+    public void setCurNameMulti(String curNameMulti) {
+        this.curNameMulti = curNameMulti;
     }
 
-    public String getCur_Name_BelMulti() {
-        return Cur_Name_BelMulti;
+    public String getCurNameBelMulti() {
+        return curNameBelMulti;
     }
 
-    public void setCur_Name_BelMulti(String cur_Name_BelMulti) {
-        Cur_Name_BelMulti = cur_Name_BelMulti;
+    public void setCurNameBelMulti(String curNameBelMulti) {
+        this.curNameBelMulti = curNameBelMulti;
     }
 
-    public String getCur_Name_EngMulti() {
-        return Cur_Name_EngMulti;
+    public String getCurNameEngMulti() {
+        return curNameEngMulti;
     }
 
-    public void setCur_Name_EngMulti(String cur_Name_EngMulti) {
-        Cur_Name_EngMulti = cur_Name_EngMulti;
+    public void setCurNameEngMulti(String curNameEngMulti) {
+        this.curNameEngMulti = curNameEngMulti;
     }
 
-    public int getCur_Scale() {
-        return Cur_Scale;
+    public int getCurScale() {
+        return curScale;
     }
 
-    public void setCur_Scale(int cur_Scale) {
-        Cur_Scale = cur_Scale;
+    public void setCurScale(int curScale) {
+        this.curScale = curScale;
     }
 
-    public int getCur_Periodicity() {
-        return Cur_Periodicity;
+    public int getCurPeriodicity() {
+        return curPeriodicity;
     }
 
-    public void setCur_Periodicity(int cur_Periodicity) {
-        Cur_Periodicity = cur_Periodicity;
+    public void setCurPeriodicity(int curPeriodicity) {
+        this.curPeriodicity = curPeriodicity;
     }
 
-    public String getCur_DateStart() {
-        return Cur_DateStart;
+    public String getCurDateStart() {
+        return curDateStart;
     }
 
-    public void setCur_DateStart(String cur_DateStart) {
-        Cur_DateStart = cur_DateStart;
+    public void setCurDateStart(String curDateStart) {
+        this.curDateStart = curDateStart;
     }
 
-    public String getCur_DateEnd() {
-        return Cur_DateEnd;
+    public String getCurDateEnd() {
+        return curDateEnd;
     }
 
-    public void setCur_DateEnd(String cur_DateEnd) {
-        Cur_DateEnd = cur_DateEnd;
+    public void setCurDateEnd(String curDateEnd) {
+        this.curDateEnd = curDateEnd;
     }
 
     @Override
@@ -207,22 +207,22 @@ public class Currency implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(Cur_ID);
-        dest.writeInt(Cur_ParentID);
-        dest.writeString(Cur_Code);
-        dest.writeString(Cur_Abbreviation);
-        dest.writeString(Cur_Name);
-        dest.writeString(Cur_Name_Bel);
-        dest.writeString(Cur_Name_Eng);
-        dest.writeString(Cur_QuotName);
-        dest.writeString(Cur_QuotName_Bel);
-        dest.writeString(Cur_QuotName_Eng);
-        dest.writeString(Cur_NameMulti);
-        dest.writeString(Cur_Name_BelMulti);
-        dest.writeString(Cur_Name_EngMulti);
-        dest.writeInt(Cur_Scale);
-        dest.writeInt(Cur_Periodicity);
-        dest.writeString(Cur_DateStart);
-        dest.writeString(Cur_DateEnd);
+        dest.writeInt(curID);
+        dest.writeInt(curParentID);
+        dest.writeString(curCode);
+        dest.writeString(curAbbreviation);
+        dest.writeString(curName);
+        dest.writeString(curNameBel);
+        dest.writeString(curNameEng);
+        dest.writeString(curQuotName);
+        dest.writeString(curQuotNameBel);
+        dest.writeString(curQuotNameEng);
+        dest.writeString(curNameMulti);
+        dest.writeString(curNameBelMulti);
+        dest.writeString(curNameEngMulti);
+        dest.writeInt(curScale);
+        dest.writeInt(curPeriodicity);
+        dest.writeString(curDateStart);
+        dest.writeString(curDateEnd);
     }
 }
