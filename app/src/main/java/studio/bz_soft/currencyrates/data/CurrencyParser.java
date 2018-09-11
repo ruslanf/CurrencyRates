@@ -8,7 +8,7 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListCurrencyParser {
+public class CurrencyParser {
 
     private static final String SELECTOR_CUR_ID = "Cur_ID";
     private static final String SELECTOR_CUR_PARENT_ID = "Cur_ParentID";
