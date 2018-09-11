@@ -23,15 +23,13 @@ public class Currency implements Parcelable {
     private String Cur_DateStart;
     private String Cur_DateEnd;
 
-    public Currency(int cur_ID, String cur_Code, String cur_Abbreviation, String cur_Name, String cur_Name_Eng, String cur_QuotName, String cur_QuotName_Eng, int cur_Scale) {
+    public Currency(int cur_ID, int cur_ParentID, String cur_Code, String cur_Abbreviation, String cur_Name, String cur_QuotName) {
         Cur_ID = cur_ID;
+        Cur_ParentID = cur_ParentID;
         Cur_Code = cur_Code;
         Cur_Abbreviation = cur_Abbreviation;
         Cur_Name = cur_Name;
-        Cur_Name_Eng = cur_Name_Eng;
         Cur_QuotName = cur_QuotName;
-        Cur_QuotName_Eng = cur_QuotName_Eng;
-        Cur_Scale = cur_Scale;
     }
 
     protected Currency(Parcel in) {
