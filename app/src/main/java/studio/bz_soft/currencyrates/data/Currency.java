@@ -1,6 +1,9 @@
 package studio.bz_soft.currencyrates.data;
 
-public class Currency {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Currency implements Parcelable {
 
     private int Cur_ID;
     private int Cur_ParentID;
@@ -30,6 +33,38 @@ public class Currency {
         Cur_QuotName_Eng = cur_QuotName_Eng;
         Cur_Scale = cur_Scale;
     }
+
+    protected Currency(Parcel in) {
+        Cur_ID = in.readInt();
+        Cur_ParentID = in.readInt();
+        Cur_Code = in.readString();
+        Cur_Abbreviation = in.readString();
+        Cur_Name = in.readString();
+        Cur_Name_Bel = in.readString();
+        Cur_Name_Eng = in.readString();
+        Cur_QuotName = in.readString();
+        Cur_QuotName_Bel = in.readString();
+        Cur_QuotName_Eng = in.readString();
+        Cur_NameMulti = in.readString();
+        Cur_Name_BelMulti = in.readString();
+        Cur_Name_EngMulti = in.readString();
+        Cur_Scale = in.readInt();
+        Cur_Periodicity = in.readInt();
+        Cur_DateStart = in.readString();
+        Cur_DateEnd = in.readString();
+    }
+
+    public static final Creator<Currency> CREATOR = new Creator<Currency>() {
+        @Override
+        public Currency createFromParcel(Parcel in) {
+            return new Currency(in);
+        }
+
+        @Override
+        public Currency[] newArray(int size) {
+            return new Currency[size];
+        }
+    };
 
     public int getCur_ID() {
         return Cur_ID;
@@ -165,5 +200,31 @@ public class Currency {
 
     public void setCur_DateEnd(String cur_DateEnd) {
         Cur_DateEnd = cur_DateEnd;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(Cur_ID);
+        dest.writeInt(Cur_ParentID);
+        dest.writeString(Cur_Code);
+        dest.writeString(Cur_Abbreviation);
+        dest.writeString(Cur_Name);
+        dest.writeString(Cur_Name_Bel);
+        dest.writeString(Cur_Name_Eng);
+        dest.writeString(Cur_QuotName);
+        dest.writeString(Cur_QuotName_Bel);
+        dest.writeString(Cur_QuotName_Eng);
+        dest.writeString(Cur_NameMulti);
+        dest.writeString(Cur_Name_BelMulti);
+        dest.writeString(Cur_Name_EngMulti);
+        dest.writeInt(Cur_Scale);
+        dest.writeInt(Cur_Periodicity);
+        dest.writeString(Cur_DateStart);
+        dest.writeString(Cur_DateEnd);
     }
 }
