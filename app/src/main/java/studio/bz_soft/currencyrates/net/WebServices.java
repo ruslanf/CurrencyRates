@@ -8,7 +8,8 @@ import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
 
 import studio.bz_soft.currencyrates.BuildConfig;
-import studio.bz_soft.currencyrates.data.ListCurrencyParser;
+import studio.bz_soft.currencyrates.data.CurrencyParser;
+import studio.bz_soft.currencyrates.data.RatesParser;
 
 /**
  * Created by Black_Zerg on 27.01.2018.
@@ -21,7 +22,8 @@ public class WebServices {
     private static final String RESPONSE_CODE = "ResponseCode";
     private static final String DATA = "Data";
     private static final int RESPONSE_CODE_200 = 200;
-    public static final String SELECTOR_SEARCH_INFO = "search";
+    public static final String SELECTOR_CURRENCIES = "currency";
+    public static final String SELECTOR_CURRENCIES_RATES = "rates";
 
     private static final WebServices instance = new WebServices();
 
@@ -57,8 +59,11 @@ public class WebServices {
                     String data = out.get(DATA).toString();
                     try {
                         switch(selector) {
-                            case SELECTOR_SEARCH_INFO:
-                                result = new ListCurrencyParser().parse(new StringReader(data));
+                            case SELECTOR_CURRENCIES:
+                                result = new CurrencyParser().parse(new StringReader(data));
+                                break;
+                            case SELECTOR_CURRENCIES_RATES:
+                                result = new RatesParser().parse(new StringReader(data));
                                 break;
                         }
                     } catch (IOException ex) {

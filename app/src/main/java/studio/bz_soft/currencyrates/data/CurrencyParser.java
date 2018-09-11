@@ -60,13 +60,13 @@ public class CurrencyParser {
                         curCode = reader.nextString();
                         break;
                     case SELECTOR_CUR_ABBREVIATION:
-                        curAbbreviation = reader.nextName();
+                        curAbbreviation = reader.nextString();
                         break;
                     case SELECTOR_CUR_NAME:
-                        curName = reader.nextName();
+                        curName = reader.nextString();
                         break;
                     case SELECTOR_CUR_QUOT_NAME:
-                        curQuotName = reader.nextName();
+                        curQuotName = reader.nextString();
                         break;
                     default:
                         reader.skipValue();

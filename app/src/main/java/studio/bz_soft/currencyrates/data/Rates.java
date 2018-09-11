@@ -10,9 +10,9 @@ public class Rates implements Parcelable {
     private String curAbbreviation;
     private int curScale;
     private String curName;
-    private float curOfficialRate;
+    private double curOfficialRate;
 
-    public Rates(int curID, String date, String curAbbreviation, int curScale, String curName, float curOfficialRate) {
+    public Rates(int curID, String date, String curAbbreviation, int curScale, String curName, double curOfficialRate) {
         this.curID = curID;
         this.date = date;
         this.curAbbreviation = curAbbreviation;
@@ -82,7 +82,7 @@ public class Rates implements Parcelable {
         this.curName = curName;
     }
 
-    public float getCurOfficialRate() {
+    public double getCurOfficialRate() {
         return curOfficialRate;
     }
 
@@ -102,6 +102,6 @@ public class Rates implements Parcelable {
         dest.writeString(curAbbreviation);
         dest.writeInt(curScale);
         dest.writeString(curName);
-        dest.writeFloat(curOfficialRate);
+        dest.writeDouble(curOfficialRate);
     }
 }
