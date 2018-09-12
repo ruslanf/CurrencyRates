@@ -2,10 +2,12 @@ package studio.bz_soft.currencyrates.data;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.Nullable;
 
 public class Currency implements Parcelable {
 
     private int curID;
+    @Nullable
     private int curParentID;
     private String curCode;
     private String curAbbreviation;
@@ -16,7 +18,9 @@ public class Currency implements Parcelable {
     private String curQuotNameBel;
     private String curQuotNameEng;
     private String curNameMulti;
+    @Nullable
     private String curNameBelMulti;
+    @Nullable
     private String curNameEngMulti;
     private int curScale;
     private int curPeriodicity;    // периодичность установления курса (0 – ежедневно, 1 – ежемесячно)
