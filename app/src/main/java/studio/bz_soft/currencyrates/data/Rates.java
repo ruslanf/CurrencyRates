@@ -2,6 +2,7 @@ package studio.bz_soft.currencyrates.data;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.Nullable;
 
 public class Rates implements Parcelable {
 
@@ -10,6 +11,7 @@ public class Rates implements Parcelable {
     private String curAbbreviation;
     private int curScale;
     private String curName;
+    @Nullable
     private double curOfficialRate;
 
     public Rates(int curID, String date, String curAbbreviation, int curScale, String curName, double curOfficialRate) {
