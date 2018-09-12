@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import studio.bz_soft.currencyrates.data.Currency;
@@ -32,20 +33,24 @@ public class SplashScreenActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Intent intent = new Intent(this, MainActivity.class);
 
+        //TODO Сделать загрузку иконок в отдельном потоке
+
         String URL = String.format("%s%s", MainActivity.API_URL, MainActivity.CURRENCIES);
         try {
             List<Currency> listCurrencies = (List<Currency>) WebServices.getInstance().
                     requestInfo(new RequestData(URL, DATA, METHOD_GET, COMMAND),
                             WebServices.SELECTOR_CURRENCIES);
             URL = String.format("%s%s", MainActivity.API_URL, MainActivity.RATES);
-            List<Rates> listRates = (List<Rates>) WebServices.getInstance().
-                    requestInfo(new RequestData(URL, DATA, METHOD_GET, COMMAND),
-                            WebServices.SELECTOR_CURRENCIES);
-            intent.putExtra(INTENT_CURRENCIES_KEY, (Parcelable) listCurrencies);
-            intent.putExtra(INTENT_RATES_KEY, (Parcelable) listRates);
+//            List<Rates> listRates = (List<Rates>) WebServices.getInstance().
+//                    requestInfo(new RequestData(URL, DATA, METHOD_GET, COMMAND),
+//                            WebServices.SELECTOR_CURRENCIES);
+//            intent.putExtra(INTENT_CURRENCIES_KEY, (Parcelable) listCurrencies);
+//            intent.putExtra(INTENT_RATES_KEY, (Parcelable) listRates);
+            intent.putParcelableArrayListExtra(INTENT_CURRENCIES_KEY, (ArrayList<? extends Parcelable>) listCurrencies);
+//            intent.putParcelableArrayListExtra(INTENT_RATES_KEY, (ArrayList<? extends Parcelable>) listRates);
             if (BuildConfig.DEBUG) {
                 Log.d(TAG, "Currencies: " + listCurrencies);
-                Log.d(TAG, "Rates: " + listRates);
+//                Log.d(TAG, "Rates: " + listRates);
             }
         } catch (NullPointerException ex) {
             if (BuildConfig.DEBUG) {
