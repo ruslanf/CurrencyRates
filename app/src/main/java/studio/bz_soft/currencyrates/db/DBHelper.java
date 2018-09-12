@@ -20,55 +20,38 @@ public class DBHelper extends SQLiteOpenHelper {
     private SQLiteDatabase writeableDB;
     public String dbValues = "";
 
-    /**
-     * SQL request for creating table USER
-     * Sex: 0 - Man, 1 - Woman
-     */
-    private final static String CREATE_TABLE_USER = "CREATE TABLE `User` ( `_id` INTEGER PRIMARY KEY AUTOINCREMENT, " +
-            "`Name` TEXT NOT NULL, " +
-            "`BirthDay` TEXT NOT NULL DEFAULT '01.01.1970', " +
-            "`Sex` INTEGER NOT NULL DEFAULT 0, " +
-            "`Height` NUMERIC NOT NULL, " +
-            "`CurrentWeight` NUMERIC NOT NULL, " +
-            "`DesiredWeight` NUMERIC NOT NULL" +
-            " );";
+    private final static String CREATE_TABLE_CURRENCIES = "CREATE TABLE IF NOT EXISTS `Currencies` " +
+            "( `_id` INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            "`curID` INTEGER NOT NULL, " +
+            "`curParentID` INTEGER NOT NULL, " +
+            "`curCode` TEXT NOT NULL, " +
+            "`curAbbreviation` TEXT NOT NULL, " +
+            "`curName` TEXT NOT NULL, " +
+            "`curQuotName` TEXT NOT NULL " +
+            ");";
 
-    /**
-     * Select all currencies from table <i>Currency</i>
-     */
-    public String SELECT_ALL_FROM_USER = "SELECT * FROM `User` ORDER BY _id";
+    private final static String CREATE_TABLE_RATES = "CREATE TABLE IF NOT EXISTS `Rates` " +
+            "( `_id` INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            "`curID` INTEGER NOT NULL, " +
+            "`date` TEXT NOT NULL, " +
+            "`curAbbreviation` TEXT NOT NULL, " +
+            "`curScale` INTEGER NOT NULL, " +
+            "`curName` TEXT NOT NULL, " +
+            "`curOfficialRate` NUMERIC NOT NULL " +
+            ");";
 
-    /**
-     *
-     */
-    public String INSERT_INTO_USER = "INSERT INTO `User` (`Name`, `BirthDay`, `Sex`, `Height`, `CurrentWeight`, `DesiredWeight`) " +
-            "VALUES(" + dbValues + ")";
+    public final static String SELECT_ALL_FROM_CURRENCIES = "SELECT * FROM `Currencies` ORDER BY _id";
+    public final static String SELECT_ALL_FROM_RATES = "SELECT * FROM `Rates` ORDER BY _id";
 
-    /**
-     *
-     * @param context
-     * @param name
-     * @param factory
-     * @param version
-     */
+    public final static String INSERT_INTO_CURRENCIES = "INSERT INTO `Currencies` (`curID`, " +
+            "`curParentID`, `curCode`, `curAbbreviation`, `curName`, `curQuotName`) " +
+            "VALUES( %s )";
+    public final static String INSERT_INTO_RATES = "INSERT INTO `Rates` (`curID`, `date`, " +
+            "`curAbbreviation`, `curScale`, `curName`, `curOfficialRate`) " +
+            "VALUES( %s )";
+
     public DBHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
-    }
-
-    @Override
-    public void onCreate(SQLiteDatabase db) {
-        if (BuildConfig.DEBUG) {
-            Log.d(TAG, "--- onCreate DB ---");
-            Log.d(TAG, "--- create Table User ---");
-        }
-        db.execSQL(CREATE_TABLE_USER);
-    }
-
-    @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        if (BuildConfig.DEBUG) {
-            Log.d(TAG, "--- onUpgrade DB ---");
-        }
     }
 
     /**
@@ -172,4 +155,22 @@ public class DBHelper extends SQLiteOpenHelper {
 //        }
 //        return user;
 //    }
+
+    @Override
+    public void onCreate(SQLiteDatabase db) {
+        if (BuildConfig.DEBUG) {
+            Log.d(TAG, "--- onCreate DB ---");
+            Log.d(TAG, "--- create Table Currencies ---");
+            Log.d(TAG, "--- create Table Rates ---");
+        }
+        db.execSQL(CREATE_TABLE_CURRENCIES);
+        db.execSQL(CREATE_TABLE_RATES);
+    }
+
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        if (BuildConfig.DEBUG) {
+            Log.d(TAG, "--- onUpgrade DB ---");
+        }
+    }
 }
