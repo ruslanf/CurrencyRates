@@ -17,6 +17,9 @@ public class SplashScreenActivity extends AppCompatActivity {
     private static final String DATA = "";
     private static final String COMMAND = "";
 
+    public static final String INTENT_CURRENCIES_KEY = "CURRENCIES";
+    public static final String INTENT_RATES_KEY = "RATES";
+
     private static final String ERROR_MESSAGE_INTERNET = "No INTERNET connection!..";
 
     @Override
