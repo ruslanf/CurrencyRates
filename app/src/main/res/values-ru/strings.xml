@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Обмен валют</string>
+    <string name="activity_list_currencies">Список валют</string>
+
+    <string name="menu_item_list_currencies">Список валют</string>
+
+    <string name="text_view_abbreviation">Код валюты</string>
+    <string name="text_view_currency_name">Название валюты</string>
+
+    <string name="image_view_country_description">Страна</string>
+</resources>
