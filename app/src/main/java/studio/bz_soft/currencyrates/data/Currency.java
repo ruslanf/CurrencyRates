@@ -4,28 +4,51 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Currency implements Parcelable {
 
+    @SerializedName("Cur_ID")
     private int curID;
     @Nullable
+    @SerializedName("Cur_ParentID")
     private int curParentID;
+    @SerializedName("Cur_Code")
     private String curCode;
+    @SerializedName("Cur_Abbreviation")
     private String curAbbreviation;
+    @SerializedName("Cur_Name")
     private String curName;
+    @SerializedName("Cur_Name_Bel")
     private String curNameBel;
+    @SerializedName("Cur_Name_Eng")
     private String curNameEng;
+    @SerializedName("Cur_QuotName")
     private String curQuotName;
+    @SerializedName("Cur_QuotName_Bel")
     private String curQuotNameBel;
+    @SerializedName("Cur_QuotName_Eng")
     private String curQuotNameEng;
+    @SerializedName("Cur_NameMulti")
     private String curNameMulti;
     @Nullable
+    @SerializedName("Cur_Name_BelMulti")
     private String curNameBelMulti;
     @Nullable
+    @SerializedName("Cur_Name_EngMulti")
     private String curNameEngMulti;
+    @SerializedName("Cur_Scale")
     private int curScale;
+    @SerializedName("Cur_Periodicity")
     private int curPeriodicity;    // периодичность установления курса (0 – ежедневно, 1 – ежемесячно)
+    @SerializedName("Cur_DateStart")
     private String curDateStart;
+    @SerializedName("Cur_DateEnd")
     private String curDateEnd;
+
+    public Currency() {
+
+    }
 
     public Currency(int curID, int curParentID, String curCode, String curAbbreviation, String curName, String curQuotName) {
         this.curID = curID;
