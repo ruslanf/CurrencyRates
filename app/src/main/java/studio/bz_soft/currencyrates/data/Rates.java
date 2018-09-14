@@ -4,14 +4,22 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Rates implements Parcelable {
 
+    @SerializedName("Cur_ID")
     private int curID;
+    @SerializedName("Date")
     private String date;
+    @SerializedName("Cur_Abbreviation")
     private String curAbbreviation;
+    @SerializedName("Cur_Scale")
     private int curScale;
+    @SerializedName("Cur_Name")
     private String curName;
     @Nullable
+    @SerializedName("Cur_OfficialRate")
     private double curOfficialRate;
 
     public Rates(int curID, String date, String curAbbreviation, int curScale, String curName, double curOfficialRate) {
