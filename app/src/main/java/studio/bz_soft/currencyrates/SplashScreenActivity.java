@@ -37,21 +37,17 @@ public class SplashScreenActivity extends AppCompatActivity {
 
         String URL = String.format("%s%s", MainActivity.API_URL, MainActivity.CURRENCIES);
         try {
-            List<Currency> listCurrencies = (List<Currency>) WebServices.getInstance().
-                    requestInfo(new RequestData(URL, DATA, METHOD_GET, COMMAND),
-                            WebServices.SELECTOR_CURRENCIES);
+//            List<Currency> listCurrencies = (List<Currency>) WebServices.getInstance().
+//                    requestInfo(new RequestData(URL, DATA, METHOD_GET, COMMAND),
+//                            WebServices.SELECTOR_CURRENCIES);
             URL = String.format("%s%s", MainActivity.API_URL, MainActivity.RATES);
 //            List<Rates> listRates = (List<Rates>) WebServices.getInstance().
 //                    requestInfo(new RequestData(URL, DATA, METHOD_GET, COMMAND),
 //                            WebServices.SELECTOR_CURRENCIES);
 //            intent.putExtra(INTENT_CURRENCIES_KEY, (Parcelable) listCurrencies);
 //            intent.putExtra(INTENT_RATES_KEY, (Parcelable) listRates);
-            intent.putParcelableArrayListExtra(INTENT_CURRENCIES_KEY, (ArrayList<? extends Parcelable>) listCurrencies);
+//            intent.putParcelableArrayListExtra(INTENT_CURRENCIES_KEY, (ArrayList<? extends Parcelable>) listCurrencies);
 //            intent.putParcelableArrayListExtra(INTENT_RATES_KEY, (ArrayList<? extends Parcelable>) listRates);
-            if (BuildConfig.DEBUG) {
-                Log.d(TAG, "Currencies: " + listCurrencies);
-//                Log.d(TAG, "Rates: " + listRates);
-            }
         } catch (NullPointerException ex) {
             if (BuildConfig.DEBUG) {
                 Log.d(TAG, ERROR_MESSAGE_INTERNET);

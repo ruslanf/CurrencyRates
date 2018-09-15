@@ -7,6 +7,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import studio.bz_soft.currencyrates.data.Currency;
+
 public class MainActivity extends AppCompatActivity {
 
     private final static String TAG = MainActivity.class.getSimpleName();
@@ -15,11 +20,16 @@ public class MainActivity extends AppCompatActivity {
     public static final String CURRENCIES = "Currencies";
     public static final String RATES = "Rates";
 
+    private Intent intent;
+    private List<Currency> listCurrency;
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_list_currencies:
                 Intent intent = new Intent(this, ListCurrenciesActivity.class);
+//                ArrayList<? extends Currency> currencyList = this.intent.getParcelableArrayListExtra(SplashScreenActivity.INTENT_CURRENCIES_KEY);
+//                intent.putParcelableArrayListExtra(SplashScreenActivity.INTENT_CURRENCIES_KEY, currencyList);
                 startActivity(intent);
                 break;
         }
@@ -39,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        Intent intent = getIntent();
+        intent = getIntent();
+//        listCurrency = intent.getParcelableArrayListExtra(SplashScreenActivity.INTENT_CURRENCIES_KEY);
     }
 }

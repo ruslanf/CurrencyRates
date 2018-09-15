@@ -2,14 +2,16 @@ package studio.bz_soft.currencyrates.net;
 
 import android.util.Log;
 
-import java.io.IOException;
+import java.io.Reader;
 import java.io.StringReader;
 import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
 
 import studio.bz_soft.currencyrates.BuildConfig;
-import studio.bz_soft.currencyrates.data.CurrencyParser;
-import studio.bz_soft.currencyrates.data.RatesParser;
+import studio.bz_soft.currencyrates.data.Currency;
+import studio.bz_soft.currencyrates.data.CurrencyJsonParser;
+import studio.bz_soft.currencyrates.data.Rates;
+import studio.bz_soft.currencyrates.data.RatesJsonParser;
 
 /**
  * Created by Black_Zerg on 27.01.2018.
@@ -57,16 +59,19 @@ public class WebServices {
             switch ((Integer) out.get(RESPONSE_CODE)) {
                 case RESPONSE_CODE_200:
                     String data = out.get(DATA).toString();
+                    Reader readData = new StringReader(data);
                     try {
                         switch(selector) {
                             case SELECTOR_CURRENCIES:
-                                result = new CurrencyParser().parse(new StringReader(data));
+                                CurrencyJsonParser cJsonParser = new CurrencyJsonParser();
+                                result = cJsonParser.parseJson(readData , Currency.class);
                                 break;
                             case SELECTOR_CURRENCIES_RATES:
-                                result = new RatesParser().parse(new StringReader(data));
+                                RatesJsonParser rJsonParser = new RatesJsonParser();
+                                result = rJsonParser.parseJson(readData, Rates.class);
                                 break;
                         }
-                    } catch (IOException ex) {
+                    } catch (Exception ex) {
                         if (BuildConfig.DEBUG) {
                             Log.e(TAG, "Unit parsing failed ", ex);
                         }
