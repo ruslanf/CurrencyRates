@@ -1,4 +1,4 @@
-package studio.bz_soft.currencyrates.data;
+package studio.bz_soft.currencyrates.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
