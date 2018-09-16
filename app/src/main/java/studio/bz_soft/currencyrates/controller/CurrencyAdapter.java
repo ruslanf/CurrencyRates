@@ -1,4 +1,4 @@
-package studio.bz_soft.currencyrates.data;
+package studio.bz_soft.currencyrates.controller;
 
 import android.app.Activity;
 import android.content.Context;
@@ -14,6 +14,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import studio.bz_soft.currencyrates.R;
+import studio.bz_soft.currencyrates.model.Currency;
 
 public class CurrencyAdapter extends ArrayAdapter {
 
@@ -79,6 +80,6 @@ public class CurrencyAdapter extends ArrayAdapter {
     }
 
     private Currency getCurrency(int position) {
-        return getCurrency(position);
+        return (Currency) getItem(position);
     }
 }
