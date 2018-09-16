@@ -41,12 +41,12 @@ public class DBHelper extends SQLiteOpenHelper {
             ");";
 
     public final static String SELECT_ALL_FROM_CURRENCIES = "SELECT * FROM `Currencies` ORDER BY _id";
-    public final static String SELECT_ALL_FROM_RATES = "SELECT * FROM `Rates` ORDER BY _id";
+    public final static String SELECT_ALL_FROM_RATES = "SELECT * FROM `RatesInterface` ORDER BY _id";
 
     public final static String INSERT_INTO_CURRENCIES = "INSERT INTO `Currencies` (`curID`, " +
             "`curParentID`, `curCode`, `curAbbreviation`, `curName`, `curQuotName`) " +
             "VALUES( %s )";
-    public final static String INSERT_INTO_RATES = "INSERT INTO `Rates` (`curID`, `date`, " +
+    public final static String INSERT_INTO_RATES = "INSERT INTO `RatesInterface` (`curID`, `date`, " +
             "`curAbbreviation`, `curScale`, `curName`, `curOfficialRate`) " +
             "VALUES( %s )";
 
@@ -161,7 +161,7 @@ public class DBHelper extends SQLiteOpenHelper {
         if (BuildConfig.DEBUG) {
             Log.d(TAG, "--- onCreate DB ---");
             Log.d(TAG, "--- create Table Currencies ---");
-            Log.d(TAG, "--- create Table Rates ---");
+            Log.d(TAG, "--- create Table RatesInterface ---");
         }
         db.execSQL(CREATE_TABLE_CURRENCIES);
         db.execSQL(CREATE_TABLE_RATES);

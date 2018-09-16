@@ -1,29 +1,23 @@
 package studio.bz_soft.currencyrates;
 
-import android.content.Intent;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.CursorAdapter;
+import android.view.View;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import rx.schedulers.Schedulers;
+import studio.bz_soft.currencyrates.network.NetworkModule;
+import studio.bz_soft.currencyrates.network.CurrencyInterface;
+import studio.bz_soft.currencyrates.view.ViewInterface;
 
-import studio.bz_soft.currencyrates.data.CurrenciesList;
-import studio.bz_soft.currencyrates.data.CurrencyAdapter;
-import studio.bz_soft.currencyrates.threads.LoadCurrenciesTask;
-
-public class ListCurrenciesActivity extends AppCompatActivity {
+public class ListCurrenciesActivity extends AppCompatActivity implements ViewInterface {
 
     private static final String TAG = ListCurrenciesActivity.class.getSimpleName();
 
-    private Handler loadCurrenciesHandler;
-    private ExecutorService executorService;
-
     private ListView listViewCurrencies;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,26 +25,7 @@ public class ListCurrenciesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_list_currencies);
 
         listViewCurrencies = findViewById(R.id.listViewCurrencies);
-
-        Intent intent = getIntent();
-
-        executorService = Executors.newSingleThreadExecutor();
-
-        loadCurrenciesHandler = new Handler() {
-            @Override
-            public void handleMessage(Message msg) {
-                Bundle bundle = msg.getData();
-                CurrenciesList currenciesList = bundle.getParcelable(LoadCurrenciesTask.LOAD_CURRENCIES_KEY);
-
-                CurrencyAdapter currencyAdapter = new CurrencyAdapter(ListCurrenciesActivity.this,
-                        getApplicationContext(),
-                        R.layout.row_currencies_layout,
-                        R.id.textViewAbbreviation,
-                        R.id.textViewCurrencyName,
-                        currenciesList.getCurrencyList());
-                listViewCurrencies.setAdapter(currencyAdapter);
-            }
-        };
+        progressBar = findViewById(R.id.progressBar);
     }
 
     @Override
@@ -60,7 +35,49 @@ public class ListCurrenciesActivity extends AppCompatActivity {
             Log.d(TAG, "onStart()...");
         }
 
-        Runnable runnable = new LoadCurrenciesTask(loadCurrenciesHandler);
-        executorService.submit(runnable);
+//        RxJavaCallAdapterFactory rxJavaCallAdapterFactory = RxJavaCallAdapterFactory.createWithScheduler(rx.schedulers.Schedulers.io());
+//        Retrofit retrofit = new Retrofit.Builder()
+//                .baseUrl("http://www.nbrb.by/API/ExRates/")
+//                .addConverterFactory(GsonConverterFactory.create())
+//                .addCallAdapterFactory(rxJavaCallAdapterFactory)
+//                .build();
+//
+//        CurrencyInterface currencyInterface = retrofit.create(CurrencyInterface.class);
+
+//        Observable<List<Currency>> observable = currencyInterface.listCurrencies();
+//        observable.subscribeOn(Schedulers.io()).subscribe();
+
+        CurrencyInterface retrofitApi = NetworkModule.getRetrofit().create(CurrencyInterface.class);
+        retrofitApi.listCurrencies()
+                .subscribeOn(Schedulers.io())
+                .subscribe();
+
+//        currencyInterface.listCurrencies().enqueue(new Callback<List<Currency>>() {
+//            @Override
+//            public void onResponse(Call<List<Currency>> call, Response<List<Currency>> response) {
+//                CurrencyAdapter currencyAdapter = new CurrencyAdapter(ListCurrenciesActivity.this,
+//                        getApplicationContext(),
+//                        R.layout.row_currencies_layout,
+//                        R.id.textViewAbbreviation,
+//                        R.id.textViewCurrencyName,
+//                        response.body());
+//                listViewCurrencies.setAdapter(currencyAdapter);
+//            }
+//
+//            @Override
+//            public void onFailure(Call<List<Currency>> call, Throwable t) {
+//
+//            }
+//        });
+    }
+
+    @Override
+    public void showWait() {
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void removeWait() {
+        progressBar.setVisibility(View.GONE);
     }
 }

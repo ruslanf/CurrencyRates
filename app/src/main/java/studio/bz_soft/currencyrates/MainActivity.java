@@ -7,10 +7,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import studio.bz_soft.currencyrates.data.Currency;
+import studio.bz_soft.currencyrates.model.Currency;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -18,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
 
     public static final String API_URL = "http://www.nbrb.by/API/ExRates/";
     public static final String CURRENCIES = "Currencies";
-    public static final String RATES = "Rates";
+    public static final String RATES = "RatesInterface";
 
     private Intent intent;
     private List<Currency> listCurrency;

@@ -2,18 +2,9 @@ package studio.bz_soft.currencyrates;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import studio.bz_soft.currencyrates.data.Currency;
-import studio.bz_soft.currencyrates.data.Rates;
-import studio.bz_soft.currencyrates.net.RequestData;
-import studio.bz_soft.currencyrates.net.WebServices;
 
 public class SplashScreenActivity extends AppCompatActivity {
 
@@ -35,24 +26,24 @@ public class SplashScreenActivity extends AppCompatActivity {
 
         //TODO Сделать загрузку иконок в отдельном потоке
 
-        String URL = String.format("%s%s", MainActivity.API_URL, MainActivity.CURRENCIES);
-        try {
+//        String URL = String.format("%s%s", MainActivity.API_URL, MainActivity.CURRENCIES);
+//        try {
 //            List<Currency> listCurrencies = (List<Currency>) WebServices.getInstance().
 //                    requestInfo(new RequestData(URL, DATA, METHOD_GET, COMMAND),
 //                            WebServices.SELECTOR_CURRENCIES);
-            URL = String.format("%s%s", MainActivity.API_URL, MainActivity.RATES);
-//            List<Rates> listRates = (List<Rates>) WebServices.getInstance().
+//            URL = String.format("%s%s", MainActivity.API_URL, MainActivity.RATES);
+//            List<RatesInterface> listRates = (List<RatesInterface>) WebServices.getInstance().
 //                    requestInfo(new RequestData(URL, DATA, METHOD_GET, COMMAND),
 //                            WebServices.SELECTOR_CURRENCIES);
 //            intent.putExtra(INTENT_CURRENCIES_KEY, (Parcelable) listCurrencies);
 //            intent.putExtra(INTENT_RATES_KEY, (Parcelable) listRates);
 //            intent.putParcelableArrayListExtra(INTENT_CURRENCIES_KEY, (ArrayList<? extends Parcelable>) listCurrencies);
 //            intent.putParcelableArrayListExtra(INTENT_RATES_KEY, (ArrayList<? extends Parcelable>) listRates);
-        } catch (NullPointerException ex) {
-            if (BuildConfig.DEBUG) {
-                Log.d(TAG, ERROR_MESSAGE_INTERNET);
-            }
-        }
+//        } catch (NullPointerException ex) {
+//            if (BuildConfig.DEBUG) {
+//                Log.d(TAG, ERROR_MESSAGE_INTERNET);
+//            }
+//        }
 
         startActivity(intent);
         finish();
