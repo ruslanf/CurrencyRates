@@ -29,6 +29,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:gravity="start|center_vertical"
+            android:textColor="@color/colorBlack"
             android:textSize="22sp"
             android:textStyle="bold"
             android:text="@string/text_view_abbreviation" />
@@ -42,6 +43,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
+            android:textColor="@color/colorBlack"
             android:text="@string/text_view_currency_name" />
 
     </LinearLayout>

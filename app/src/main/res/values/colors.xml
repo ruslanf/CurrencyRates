@@ -6,4 +6,8 @@
 
     <color name="colorMainActivityBackground">#D6D5D2</color>
 
+    <color name="colorBlack">#000000</color>
+    <color name="colorWhite">#FFFFFF</color>
+    <color name="colorRed">#FF0000</color>
+    <color name="colorDarkGray">#A9A9A9</color>
 </resources>
