@@ -13,9 +13,6 @@ public class SplashScreenActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Intent intent = new Intent(this, MainActivity.class);
-
-        //TODO Сделать загрузку иконок в отдельном потоке
-
         startActivity(intent);
         finish();
     }
