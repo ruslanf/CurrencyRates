@@ -2,34 +2,32 @@ package studio.bz_soft.currencyrates;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.util.SparseBooleanArray;
 import android.view.View;
+import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 
+import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.Callable;
 
 import io.reactivex.Observable;
-import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.disposables.Disposable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import studio.bz_soft.currencyrates.controller.CurrencyAdapter;
 import studio.bz_soft.currencyrates.model.Currency;
-import studio.bz_soft.currencyrates.model.Image;
-import studio.bz_soft.currencyrates.model.ImageList;
-import studio.bz_soft.currencyrates.network.NetworkModule;
+import studio.bz_soft.currencyrates.model.CurrencyViewModel;
 import studio.bz_soft.currencyrates.network.CurrencyInterface;
+import studio.bz_soft.currencyrates.network.NetworkModule;
 import studio.bz_soft.currencyrates.view.ViewInterface;
 
-public class ListCurrenciesActivity extends AppCompatActivity implements ViewInterface {
+public class ListCurrenciesActivity extends AppCompatActivity implements ViewInterface,
+        View.OnClickListener, AdapterView.OnItemClickListener {
 
     private static final String TAG = ListCurrenciesActivity.class.getSimpleName();
 
@@ -37,14 +35,28 @@ public class ListCurrenciesActivity extends AppCompatActivity implements ViewInt
 
     private ListView listViewCurrencies;
     private ProgressBar progressBar;
-    private CompositeDisposable compositeDisposable;
+    private CurrencyAdapter currencyAdapter;
 
-    private ImageList imageList;
+    private CurrencyViewModel createCurrencyViewModel(Currency currency) {
+        Bitmap bitmap;
+        try {
+            String abbreviation = currency.getCurAbbreviation().substring(0, 2);
+            String filename = String.format("%s/%s.png", ASSETS_IMAGE_FOLDER, abbreviation);
+
+            InputStream inputStream = getAssets().open(filename);
+            bitmap = BitmapFactory.decodeStream(inputStream);
+        } catch (IOException ex) {
+            if (BuildConfig.DEBUG) {
+                Log.e(TAG, "Assets exception: " + ex);
+            }
+            bitmap = BitmapFactory.decodeResource(getResources(), R.drawable._unknown);
+        }
+        return new CurrencyViewModel(currency, bitmap);
+    }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        compositeDisposable.dispose();
     }
 
     @Override
@@ -53,38 +65,17 @@ public class ListCurrenciesActivity extends AppCompatActivity implements ViewInt
         setContentView(R.layout.activity_list_currencies);
 
         listViewCurrencies = findViewById(R.id.listViewCurrencies);
+        listViewCurrencies.setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE);
+        listViewCurrencies.setOnItemClickListener(this);
+        currencyAdapter = new CurrencyAdapter(ListCurrenciesActivity.this,
+                getApplicationContext(),
+                R.layout.row_currencies_layout,
+                R.id.textViewAbbreviation,
+                R.id.textViewCurrencyName);
+        listViewCurrencies.setAdapter(currencyAdapter);
+
         progressBar = findViewById(R.id.progressBar);
         showWait();
-
-        Observable<List<Image>> observableImageList = Observable.fromCallable(new Callable<List<Image>>() {
-            @Override
-            public List<Image> call() throws Exception {
-                List<Image> list = new ArrayList<>();
-
-                String[] imageFolder = getAssets().list(ASSETS_IMAGE_FOLDER);
-                if (imageFolder.length > 0) {
-                    for (int i = 0; i < imageFolder.length; i++) {
-                        String filename = String.format("%s/%s", ASSETS_IMAGE_FOLDER, imageFolder[i]);
-                        String code = imageFolder[i].substring(0, 2);
-                        InputStream inputStream = getAssets().open(filename);
-                        Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-                        list.add(new Image(code, bitmap));
-                    }
-                } else {
-                    if (BuildConfig.DEBUG) {
-                        Log.d(TAG, "No images in asset folder...");
-                    }
-                }
-                return list;
-            }
-        });
-        Disposable disposable =
-        observableImageList
-                .subscribeOn(Schedulers.io())
-                .subscribe(list -> imageList = new ImageList(list));
-
-        compositeDisposable = new CompositeDisposable();
-        compositeDisposable.add(disposable);
     }
 
     @Override
@@ -95,27 +86,42 @@ public class ListCurrenciesActivity extends AppCompatActivity implements ViewInt
         }
 
         CurrencyInterface retrofitApi = NetworkModule.getRetrofit().create(CurrencyInterface.class);
-        retrofitApi.listCurrencies()
-                .enqueue(new Callback<List<Currency>>() {
+
+        Observable.fromCallable(retrofitApi::listCurrencies)
+                .observeOn(Schedulers.io())
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .map(data -> data.execute().body())
+                .flatMapIterable(item -> item)
+                .map(this::createCurrencyViewModel)
+
+//                .toSortedList((item1, item2) -> item1.getCurrency().getCurAbbreviation()
+//                        .compareTo(item2.getCurrency().getCurAbbreviation()))
+
+                .sorted((item1, item2) -> item1.getCurrency().getCurAbbreviation()
+                        .compareTo(item2.getCurrency().getCurAbbreviation()))
+
+                .subscribe(new DisposableObserver<CurrencyViewModel>() {
                     @Override
-                    public void onResponse(Call<List<Currency>> call, Response<List<Currency>> response) {
-                        if (response.body() != null) {
-                            CurrencyAdapter currencyAdapter = new CurrencyAdapter(ListCurrenciesActivity.this,
-                                    getApplicationContext(),
-                                    R.layout.row_currencies_layout,
-                                    R.id.textViewAbbreviation,
-                                    R.id.textViewCurrencyName,
-                                    response.body(), imageList);
-                            listViewCurrencies.setAdapter(currencyAdapter);
-                        }
-                        removeWait();
+                    public void onNext(CurrencyViewModel currencyViewModel) {
+                        runOnUiThread(() -> {
+                            currencyAdapter.add(currencyViewModel);
+                            currencyAdapter.notifyDataSetChanged();
+                        });
                     }
 
                     @Override
-                    public void onFailure(Call<List<Currency>> call, Throwable t) {
+                    public void onError(Throwable e) {
+                        if (BuildConfig.DEBUG) {
+                            Log.e(TAG, "Error - " + e);
+                        }
+                    }
 
+                    @Override
+                    public void onComplete() {
+//                        removeWait();
                     }
                 });
+        removeWait();
     }
 
     @Override
@@ -126,5 +132,21 @@ public class ListCurrenciesActivity extends AppCompatActivity implements ViewInt
     @Override
     public void removeWait() {
         progressBar.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onClick(View v) {
+
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+        SparseBooleanArray sparseBooleanArray = listViewCurrencies.getCheckedItemPositions();
+        for (int i = 0; i < sparseBooleanArray.size(); i++) {
+            int key = sparseBooleanArray.keyAt(i);
+            if (sparseBooleanArray.get(key))
+                Log.d(TAG, "key: " + key);
+        }
     }
 }

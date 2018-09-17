@@ -15,40 +15,41 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import studio.bz_soft.currencyrates.R;
 import studio.bz_soft.currencyrates.model.Currency;
-import studio.bz_soft.currencyrates.model.ImageList;
+import studio.bz_soft.currencyrates.model.CurrencyViewModel;
 
 public class CurrencyAdapter extends ArrayAdapter {
 
-    private List<Currency> currencyList;
-    private ImageList imageList;
+    private static final String TAG = CurrencyAdapter.class.getSimpleName();
+
+    private List<CurrencyViewModel> data;
     private int resource;
-    private int tvResource;
-    private int tvResource1;
-    private Activity activity;
+    private Boolean chbSelected;
     private LayoutInflater inflater;
 
 
+
     public CurrencyAdapter(Activity activity, @NonNull Context context, int resource,
-                           int tvResource, int tvResource1,
-                           @NonNull List objects, @NonNull ImageList imageList) {
-        super(context, resource, objects);
+                           int tvResource, int tvResource1) {
+        super(context, resource);
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        currencyList = objects;
-        this.imageList = imageList;
+        data = new ArrayList<>();
         this.resource = resource;
-        this.tvResource = tvResource;
-        this.tvResource1 = tvResource1;
-        this.activity = activity;
     }
 
     static class ViewHolder {
         ImageView imageViewCountry;
         TextView textViewAbbreviation;
         TextView textViewCurrencyName;
+        ImageView imageViewChecked;
+    }
+
+    public void add(CurrencyViewModel item) {
+        data.add(item);
     }
 
     @NonNull
@@ -58,46 +59,37 @@ public class CurrencyAdapter extends ArrayAdapter {
         View rowView = convertView;
         if (rowView == null) {
             rowView = inflater.inflate(resource, parent, false);
+
             viewHolder = new ViewHolder();
             viewHolder.imageViewCountry = rowView.findViewById(R.id.imageViewCountry);
             viewHolder.textViewAbbreviation = rowView.findViewById(R.id.textViewAbbreviation);
             viewHolder.textViewCurrencyName = rowView.findViewById(R.id.textViewCurrencyName);
+            viewHolder.imageViewChecked = rowView.findViewById(R.id.imageViewChecked);
+
             rowView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) rowView.getTag();
         }
 
-        Currency currency = getCurrency(position);
+        CurrencyViewModel item = data.get(position);
+        Currency currency = item.getCurrency();
 
-        String abbreviation = currency.getCurAbbreviation();
-        for (int i = 0; i < imageList.getListOfImages().size(); i++) {
-            String code = imageList.getListOfImages().get(i).getCode();
-            if (abbreviation.substring(0, 2).equals(code)) {
-                Bitmap bitmap = imageList.getListOfImages().get(i).getImage();
-                viewHolder.imageViewCountry.setImageDrawable(roundedImage(bitmap));
-                break;
-            }
-        }
-
-        viewHolder.textViewAbbreviation.setText(abbreviation);
+        viewHolder.textViewAbbreviation.setText(currency.getCurAbbreviation());
         viewHolder.textViewCurrencyName.setText(currency.getCurName());
+        viewHolder.imageViewCountry.setImageDrawable(roundedImage(item.getCountryImage()));
 
         return rowView;
     }
 
     @Override
     public int getCount() {
-        return currencyList.size();
+        return data.size();
     }
 
     @Nullable
     @Override
     public Object getItem(int position) {
-        return currencyList.get(position);
-    }
-
-    private Currency getCurrency(int position) {
-        return (Currency) getItem(position);
+        return data.get(position);
     }
 
     private RoundedBitmapDrawable roundedImage(Bitmap bitmap) {

@@ -8,4 +8,7 @@
     <string name="text_view_currency_name">Currency name</string>
 
     <string name="image_view_country_description">Country flag</string>
+    <string name="image_view_checked_description">Checked</string>
+
+    <string name="check_box_select_currency"></string>
 </resources>
