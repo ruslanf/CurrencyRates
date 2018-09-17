@@ -31,8 +31,6 @@ public class CurrencyAdapter extends ArrayAdapter {
     private Boolean chbSelected;
     private LayoutInflater inflater;
 
-
-
     public CurrencyAdapter(Activity activity, @NonNull Context context, int resource,
                            int tvResource, int tvResource1) {
         super(context, resource);

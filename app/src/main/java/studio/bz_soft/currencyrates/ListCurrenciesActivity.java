@@ -96,10 +96,9 @@ public class ListCurrenciesActivity extends AppCompatActivity implements ViewInt
 
 //                .toSortedList((item1, item2) -> item1.getCurrency().getCurAbbreviation()
 //                        .compareTo(item2.getCurrency().getCurAbbreviation()))
-
-                .sorted((item1, item2) -> item1.getCurrency().getCurAbbreviation()
-                        .compareTo(item2.getCurrency().getCurAbbreviation()))
-
+                // TODO Problem with sorting list
+//                .sorted((item1, item2) -> item1.getCurrency().getCurAbbreviation()
+//                        .compareTo(item2.getCurrency().getCurAbbreviation()))
                 .subscribe(new DisposableObserver<CurrencyViewModel>() {
                     @Override
                     public void onNext(CurrencyViewModel currencyViewModel) {
@@ -118,10 +117,9 @@ public class ListCurrenciesActivity extends AppCompatActivity implements ViewInt
 
                     @Override
                     public void onComplete() {
-//                        removeWait();
+                        runOnUiThread(() -> removeWait());
                     }
                 });
-        removeWait();
     }
 
     @Override
