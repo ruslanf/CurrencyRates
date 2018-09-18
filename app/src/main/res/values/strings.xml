@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Exchange Rates</string>
-    <string name="activity_list_currencies">List of currencies</string>
+    <string name="title_activity_main">Exchange Rates</string>
+    <string name="title_activity_list_currencies">List of currencies</string>
 
     <string name="menu_item_list_currencies">List of currencies</string>
 
