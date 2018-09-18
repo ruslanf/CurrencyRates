@@ -2,7 +2,7 @@ package studio.bz_soft.currencyrates.model;
 
 import com.google.gson.annotations.SerializedName;
 
-public final class Rates {
+public final class Rate {
 
     @SerializedName("Cur_ID")
     private final int curID;
@@ -17,8 +17,8 @@ public final class Rates {
     @SerializedName("Cur_OfficialRate")
     private final double curOfficialRate;
 
-    public Rates(final int curID, final String date, final String curAbbreviation,
-                 final int curScale, final String curName, final double curOfficialRate) {
+    public Rate(final int curID, final String date, final String curAbbreviation,
+                final int curScale, final String curName, final double curOfficialRate) {
         this.curID = curID;
         this.date = date;
         this.curAbbreviation = curAbbreviation;
