@@ -8,6 +8,6 @@ import studio.bz_soft.currencyrates.model.Currency;
 
 public interface CurrencyInterface {
 
-    @GET("Currencies")
+    @GET("CurrenciesEntity")
     Call<List<Currency>> listCurrencies();
 }

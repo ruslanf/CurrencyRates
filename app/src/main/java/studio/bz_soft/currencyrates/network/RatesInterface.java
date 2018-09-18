@@ -9,6 +9,6 @@ import retrofit2.http.QueryMap;
 
 public interface RatesInterface {
 
-    @GET("Rates")
+    @GET("Rate")
     Call<List<RatesInterface>> listRates(@QueryMap Map<String, String> data);
 }

@@ -14,6 +14,10 @@ import android.widget.ProgressBar;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -96,23 +100,34 @@ public class ListCurrenciesActivity extends AppCompatActivity implements ViewInt
 
         CurrencyInterface retrofitApi = NetworkModule.getRetrofit().create(CurrencyInterface.class);
 
-        Observable<CurrencyViewModel> observableListCurrencies = Observable.fromCallable(retrofitApi::listCurrencies)
-                .observeOn(Schedulers.io())
-                .subscribeOn(AndroidSchedulers.mainThread())
-                .map(data -> data.execute().body())
-                .flatMapIterable(item -> item)
-                .sorted((item1, item2) -> item1.getCurAbbreviation()
-                        .compareTo(item2.getCurAbbreviation()))
-                .map(this::createCurrencyViewModel)
-                //                .toSortedList((item1, item2) -> item1.getCurrency().getCurAbbreviation()
-//                        .compareTo(item2.getCurrency().getCurAbbreviation()))
-                // TODO Problem with sorting list
-//                .sorted((item1, item2) -> item1.getCurrency().getCurAbbreviation()
-//                        .compareTo(item2.getCurrency().getCurAbbreviation()))
-                ;
+        // TODO не работает сортировка List<Currency>
+        Observable<CurrencyViewModel> observableListCurrencies =
+                Observable.fromCallable(retrofitApi::listCurrencies)
+                        .observeOn(Schedulers.io())
+                        .map(data -> data.execute().body())
+//                        .observeOn(Schedulers.computation())
+//                        .map(unsorted -> {
+//                            Log.d(TAG, "unsorted size = " + unsorted.size());
+//                            Collections.sort(unsorted, new Comparator<Currency>() {
+//                                @Override
+//                                public int compare(Currency o1, Currency o2) {
+//                                    int result = o1.getCurAbbreviation().compareTo(o2.getCurAbbreviation());
+//                                    Log.d(TAG, "Compare result - " + result);
+//                                    return result;
+//                                }
+//                            });
+//
+////                            List<Currency> sorted = new ArrayList<>(unsorted);
+////                            Collections.copy(sorted, unsorted);
+////                            Collections.sort(sorted);
+//                            Log.d(TAG, "unsorted size = " + unsorted.size());
+//                            return unsorted;
+//                        })
+                        .flatMapIterable(item -> item)
+                        .map(this::createCurrencyViewModel)
+                        .subscribeOn(AndroidSchedulers.mainThread());
 
-        observableListCurrencies
-                .subscribe(new DisposableObserver<CurrencyViewModel>() {
+        observableListCurrencies.subscribe(new DisposableObserver<CurrencyViewModel>() {
             @Override
             public void onNext(CurrencyViewModel currencyViewModel) {
                 runOnUiThread(() -> {
