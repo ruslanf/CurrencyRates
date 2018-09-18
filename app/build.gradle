@@ -45,8 +45,12 @@ dependencies {
 
     // Room
     def room_version = "1.1.1"
+    // Room components
+    implementation "android.arch.persistence.room:runtime:$room_version"
+    annotationProcessor "android.arch.persistence.room:compiler:$room_version"
     // ViewModel and LiveData
     implementation "android.arch.lifecycle:extensions:$room_version"
+    annotationProcessor "android.arch.lifecycle:compiler:$room_version"
     // alternately - if using Java8, use the following instead of compiler
     implementation "android.arch.lifecycle:common-java8:$room_version"
     // optional - ReactiveStreams support for LiveData
