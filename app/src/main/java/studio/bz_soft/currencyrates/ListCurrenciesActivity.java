@@ -17,6 +17,8 @@ import java.io.InputStream;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 import studio.bz_soft.currencyrates.controller.CurrencyAdapter;
@@ -36,6 +38,8 @@ public class ListCurrenciesActivity extends AppCompatActivity implements ViewInt
     private ListView listViewCurrencies;
     private ProgressBar progressBar;
     private CurrencyAdapter currencyAdapter;
+
+    private CompositeDisposable compositeDisposable;
 
     private CurrencyViewModel createCurrencyViewModel(Currency currency) {
         Bitmap bitmap;
@@ -57,6 +61,10 @@ public class ListCurrenciesActivity extends AppCompatActivity implements ViewInt
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if (BuildConfig.DEBUG) {
+            Log.d(TAG, "onDestroy()...");
+        }
+        compositeDisposable.dispose();
     }
 
     @Override
@@ -64,14 +72,15 @@ public class ListCurrenciesActivity extends AppCompatActivity implements ViewInt
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_currencies);
 
+        final int[] rId = new int[]{ R.id.textViewAbbreviation, R.id.textViewCurrencyName };
+
         listViewCurrencies = findViewById(R.id.listViewCurrencies);
         listViewCurrencies.setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE);
         listViewCurrencies.setOnItemClickListener(this);
         currencyAdapter = new CurrencyAdapter(ListCurrenciesActivity.this,
                 getApplicationContext(),
                 R.layout.row_currencies_layout,
-                R.id.textViewAbbreviation,
-                R.id.textViewCurrencyName);
+                rId);
         listViewCurrencies.setAdapter(currencyAdapter);
 
         progressBar = findViewById(R.id.progressBar);
@@ -87,39 +96,46 @@ public class ListCurrenciesActivity extends AppCompatActivity implements ViewInt
 
         CurrencyInterface retrofitApi = NetworkModule.getRetrofit().create(CurrencyInterface.class);
 
-        Observable.fromCallable(retrofitApi::listCurrencies)
+        Observable<CurrencyViewModel> observableListCurrencies = Observable.fromCallable(retrofitApi::listCurrencies)
                 .observeOn(Schedulers.io())
                 .subscribeOn(AndroidSchedulers.mainThread())
                 .map(data -> data.execute().body())
                 .flatMapIterable(item -> item)
+                .sorted((item1, item2) -> item1.getCurAbbreviation()
+                        .compareTo(item2.getCurAbbreviation()))
                 .map(this::createCurrencyViewModel)
-
-//                .toSortedList((item1, item2) -> item1.getCurrency().getCurAbbreviation()
+                //                .toSortedList((item1, item2) -> item1.getCurrency().getCurAbbreviation()
 //                        .compareTo(item2.getCurrency().getCurAbbreviation()))
                 // TODO Problem with sorting list
 //                .sorted((item1, item2) -> item1.getCurrency().getCurAbbreviation()
 //                        .compareTo(item2.getCurrency().getCurAbbreviation()))
+                ;
+
+        observableListCurrencies
                 .subscribe(new DisposableObserver<CurrencyViewModel>() {
-                    @Override
-                    public void onNext(CurrencyViewModel currencyViewModel) {
-                        runOnUiThread(() -> {
-                            currencyAdapter.add(currencyViewModel);
-                            currencyAdapter.notifyDataSetChanged();
-                        });
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        if (BuildConfig.DEBUG) {
-                            Log.e(TAG, "Error - " + e);
-                        }
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        runOnUiThread(() -> removeWait());
-                    }
+            @Override
+            public void onNext(CurrencyViewModel currencyViewModel) {
+                runOnUiThread(() -> {
+                    currencyAdapter.add(currencyViewModel);
+                    currencyAdapter.notifyDataSetChanged();
                 });
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                if (BuildConfig.DEBUG) {
+                    Log.e(TAG, "Error - " + e);
+                }
+            }
+
+            @Override
+            public void onComplete() {
+                runOnUiThread(() -> removeWait());
+            }
+        });
+
+        Disposable disposable = observableListCurrencies.subscribe();
+        compositeDisposable = new CompositeDisposable(disposable);
     }
 
     @Override

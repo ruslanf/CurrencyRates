@@ -44,13 +44,17 @@ dependencies {
     implementation "com.squareup.retrofit2:adapter-rxjava:$retrofit2_version"
 
     // Room
-    def lifecycle_version = "1.1.1"
+    def room_version = "1.1.1"
     // ViewModel and LiveData
-    implementation "android.arch.lifecycle:extensions:$lifecycle_version"
+    implementation "android.arch.lifecycle:extensions:$room_version"
     // alternately - if using Java8, use the following instead of compiler
-    implementation "android.arch.lifecycle:common-java8:$lifecycle_version"
+    implementation "android.arch.lifecycle:common-java8:$room_version"
     // optional - ReactiveStreams support for LiveData
-    implementation "android.arch.lifecycle:reactivestreams:$lifecycle_version"
+    implementation "android.arch.lifecycle:reactivestreams:$room_version"
     // optional - Test helpers for LiveData
-    testImplementation "android.arch.core:core-testing:$lifecycle_version"
+    testImplementation "android.arch.core:core-testing:$room_version"
+    // optional - RxJava support for Room
+    implementation "android.arch.persistence.room:rxjava2:$room_version"
+    // Test helpers
+    testImplementation "android.arch.persistence.room:testing:$room_version"
 }

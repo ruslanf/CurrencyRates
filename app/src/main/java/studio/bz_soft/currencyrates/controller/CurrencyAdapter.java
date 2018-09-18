@@ -8,10 +8,13 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -28,11 +31,10 @@ public class CurrencyAdapter extends ArrayAdapter {
 
     private List<CurrencyViewModel> data;
     private int resource;
-    private Boolean chbSelected;
     private LayoutInflater inflater;
 
     public CurrencyAdapter(Activity activity, @NonNull Context context, int resource,
-                           int tvResource, int tvResource1) {
+                           int[] rId) {
         super(context, resource);
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         data = new ArrayList<>();
@@ -43,7 +45,7 @@ public class CurrencyAdapter extends ArrayAdapter {
         ImageView imageViewCountry;
         TextView textViewAbbreviation;
         TextView textViewCurrencyName;
-        ImageView imageViewChecked;
+        CheckBox checkBox;
     }
 
     public void add(CurrencyViewModel item) {
@@ -62,7 +64,11 @@ public class CurrencyAdapter extends ArrayAdapter {
             viewHolder.imageViewCountry = rowView.findViewById(R.id.imageViewCountry);
             viewHolder.textViewAbbreviation = rowView.findViewById(R.id.textViewAbbreviation);
             viewHolder.textViewCurrencyName = rowView.findViewById(R.id.textViewCurrencyName);
-            viewHolder.imageViewChecked = rowView.findViewById(R.id.imageViewChecked);
+            viewHolder.checkBox = rowView.findViewById(R.id.checkBox);
+            viewHolder.checkBox
+                    .setOnCheckedChangeListener((CompoundButton button, boolean isChecked) -> {
+                        Log.d(TAG, "isChecked: " + button.isChecked());
+                    });
 
             rowView.setTag(viewHolder);
         } else {
