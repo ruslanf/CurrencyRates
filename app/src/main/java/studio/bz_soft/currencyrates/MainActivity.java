@@ -11,6 +11,13 @@ import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final String TAG = MainActivity.class.getSimpleName();
+
+    private void startListCurrenciesActivity() {
+        Intent intent = new Intent(this, ListCurrenciesActivity.class);
+        startActivity(intent);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,8 +27,10 @@ public class MainActivity extends AppCompatActivity {
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(view -> {
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+            Intent intent = new Intent(this, ListCurrenciesActivity.class);
+            startActivity(intent);
+//            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
         });
     }
 
@@ -29,8 +38,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_list_currencies:
-                Intent intent = new Intent(this, ListCurrenciesActivity.class);
-                startActivity(intent);
+                startListCurrenciesActivity();
                 break;
         }
         return super.onOptionsItemSelected(item);
