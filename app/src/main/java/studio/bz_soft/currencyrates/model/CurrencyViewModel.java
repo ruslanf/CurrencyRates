@@ -25,12 +25,5 @@ public final class CurrencyViewModel implements Comparable<CurrencyViewModel> {
     public int compareTo(@NonNull CurrencyViewModel o) {
         return this.getCurrency().getCurAbbreviation()
                 .compareTo(o.getCurrency().getCurAbbreviation());
-//        if (!this.getCurrency().getCurAbbreviation()
-//                .equalsIgnoreCase(o.getCurrency().getCurAbbreviation())) {
-//            return this.getCurrency().getCurAbbreviation()
-//                    .compareTo(o.getCurrency().getCurAbbreviation());
-//        } else {
-//            return 0;
-//        }
     }
 }
