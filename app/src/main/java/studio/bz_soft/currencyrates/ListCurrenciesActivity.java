@@ -3,6 +3,7 @@ package studio.bz_soft.currencyrates;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.util.SparseBooleanArray;
@@ -11,6 +12,7 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,21 +30,25 @@ import studio.bz_soft.currencyrates.controller.CurrencyAdapter;
 import studio.bz_soft.currencyrates.model.Currency;
 import studio.bz_soft.currencyrates.model.CurrencyViewModel;
 import studio.bz_soft.currencyrates.network.CurrencyInterface;
+import studio.bz_soft.currencyrates.network.InternetConnectionListener;
 import studio.bz_soft.currencyrates.network.NetworkModule;
 import studio.bz_soft.currencyrates.view.ViewInterface;
 
 public class ListCurrenciesActivity extends AppCompatActivity implements ViewInterface,
-        View.OnClickListener, AdapterView.OnItemClickListener {
+        View.OnClickListener, AdapterView.OnItemClickListener, InternetConnectionListener {
 
     private static final String TAG = ListCurrenciesActivity.class.getSimpleName();
 
     private static final String ASSETS_IMAGE_FOLDER = "icons-48";
     private static final String DATE_FORMAT_NOW = "yyyy-MM-dd HH:mm:ss";
+    private static final String ERROR_MESSAGE_NO_INTERNET = "%s";
+    private static final int MESSAGE_DURATION = Toast.LENGTH_LONG;
 
     private ListView listViewCurrencies;
     private ProgressBar progressBar;
     private CurrencyAdapter currencyAdapter;
 
+    private NetworkModule networkModule;
     private CompositeDisposable compositeDisposable;
     private String dateNow = "";
 
@@ -70,12 +76,16 @@ public class ListCurrenciesActivity extends AppCompatActivity implements ViewInt
             Log.d(TAG, "onDestroy()...");
         }
         compositeDisposable.dispose();
+        networkModule.removeInternetConnectionListener();
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_currencies);
+
+        networkModule = new NetworkModule(getApplication());
+        networkModule.setInternetConnectionListener(this);
 
         dateNow = new SimpleDateFormat(DATE_FORMAT_NOW, Locale.getDefault()).format(new Date());
 
@@ -101,7 +111,7 @@ public class ListCurrenciesActivity extends AppCompatActivity implements ViewInt
             Log.d(TAG, "onStart()...");
         }
 
-        CurrencyInterface retrofitApi = NetworkModule.getRetrofit().create(CurrencyInterface.class);
+        CurrencyInterface retrofitApi = networkModule.getRetrofit().create(CurrencyInterface.class);
 
         Observable<CurrencyViewModel> observableListCurrencies =
                 Observable.fromCallable(retrofitApi::listCurrencies)
@@ -164,5 +174,16 @@ public class ListCurrenciesActivity extends AppCompatActivity implements ViewInt
             if (sparseBooleanArray.get(key))
                 Log.d(TAG, "key: " + key);
         }
+    }
+
+    @Override
+    public void onInternetUnavailable() {
+        runOnUiThread(() -> showToast("No Internet connection..."));
+    }
+
+    public void showToast(String message) {
+        Toast toast = Toast.makeText(getApplicationContext(),
+                String.format(ERROR_MESSAGE_NO_INTERNET, message), MESSAGE_DURATION);
+        toast.show();
     }
 }
