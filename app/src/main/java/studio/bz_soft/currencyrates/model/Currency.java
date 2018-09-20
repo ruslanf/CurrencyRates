@@ -1,10 +1,11 @@
 package studio.bz_soft.currencyrates.model;
 
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.google.gson.annotations.SerializedName;
 
-public final class Currency {
+public final class Currency implements Comparable<Currency> {
 
     @SerializedName("Cur_ID")
     private final int curID;
@@ -123,5 +124,10 @@ public final class Currency {
 
     public String getCurDateEnd() {
         return curDateEnd;
+    }
+
+    @Override
+    public int compareTo(@NonNull Currency o) {
+        return this.getCurAbbreviation().compareTo(o.getCurAbbreviation());
     }
 }

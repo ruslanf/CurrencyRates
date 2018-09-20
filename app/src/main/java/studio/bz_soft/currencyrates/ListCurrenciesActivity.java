@@ -14,10 +14,9 @@ import android.widget.ProgressBar;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -38,12 +37,14 @@ public class ListCurrenciesActivity extends AppCompatActivity implements ViewInt
     private static final String TAG = ListCurrenciesActivity.class.getSimpleName();
 
     private static final String ASSETS_IMAGE_FOLDER = "icons-48";
+    private static final String DATE_FORMAT_NOW = "yyyy-MM-dd HH:mm:ss";
 
     private ListView listViewCurrencies;
     private ProgressBar progressBar;
     private CurrencyAdapter currencyAdapter;
 
     private CompositeDisposable compositeDisposable;
+    private String dateNow = "";
 
     private CurrencyViewModel createCurrencyViewModel(Currency currency) {
         Bitmap bitmap;
@@ -76,6 +77,8 @@ public class ListCurrenciesActivity extends AppCompatActivity implements ViewInt
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_currencies);
 
+        dateNow = new SimpleDateFormat(DATE_FORMAT_NOW, Locale.getDefault()).format(new Date());
+
         final int[] rId = new int[]{ R.id.textViewAbbreviation, R.id.textViewCurrencyName };
 
         listViewCurrencies = findViewById(R.id.listViewCurrencies);
@@ -100,30 +103,14 @@ public class ListCurrenciesActivity extends AppCompatActivity implements ViewInt
 
         CurrencyInterface retrofitApi = NetworkModule.getRetrofit().create(CurrencyInterface.class);
 
-        // TODO не работает сортировка List<Currency>
         Observable<CurrencyViewModel> observableListCurrencies =
                 Observable.fromCallable(retrofitApi::listCurrencies)
                         .observeOn(Schedulers.io())
                         .map(data -> data.execute().body())
-//                        .observeOn(Schedulers.computation())
-//                        .map(unsorted -> {
-//                            Log.d(TAG, "unsorted size = " + unsorted.size());
-//                            Collections.sort(unsorted, new Comparator<Currency>() {
-//                                @Override
-//                                public int compare(Currency o1, Currency o2) {
-//                                    int result = o1.getCurAbbreviation().compareTo(o2.getCurAbbreviation());
-//                                    Log.d(TAG, "Compare result - " + result);
-//                                    return result;
-//                                }
-//                            });
-//
-////                            List<Currency> sorted = new ArrayList<>(unsorted);
-////                            Collections.copy(sorted, unsorted);
-////                            Collections.sort(sorted);
-//                            Log.d(TAG, "unsorted size = " + unsorted.size());
-//                            return unsorted;
-//                        })
+                        .observeOn(Schedulers.computation())
                         .flatMapIterable(item -> item)
+                        .sorted()
+                        .filter(item -> item.getCurDateEnd().compareTo(dateNow) > 0)
                         .map(this::createCurrencyViewModel)
                         .subscribeOn(AndroidSchedulers.mainThread());
 
