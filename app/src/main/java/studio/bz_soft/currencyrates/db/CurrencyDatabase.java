@@ -9,6 +9,7 @@ import android.content.Context;
 public abstract class CurrencyDatabase extends RoomDatabase {
 
     public abstract CurrenciesDao currenciesDao();
+    public abstract RatesDao ratesDao();
 
     public static volatile CurrencyDatabase INSTANCE;
 
