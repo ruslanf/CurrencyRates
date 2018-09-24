@@ -1,80 +1,65 @@
-package studio.bz_soft.currencyrates.db;
+package studio.bz_soft.currencyrates.db_model;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 
 @Entity(tableName = "Rates")
-public class RatesEntity {
+public final class RatesEntity {
 
     @PrimaryKey(autoGenerate = true)
-    private int _id;
+    @ColumnInfo(name = "_id")
+    private final int _id;
     @ColumnInfo(name = "curID")
-    private int curID;
+    private final int curID;
     @ColumnInfo(name = "date")
-    private String date;
+    private final String date;
     @ColumnInfo(name = "curAbbreviation")
-    private String curAbbreviation;
+    private final String curAbbreviation;
     @ColumnInfo(name = "curScale")
-    private String curScale;
+    private final String curScale;
     @ColumnInfo(name = "curName")
-    private String curName;
+    private final String curName;
     @ColumnInfo(name = "curOfficialRate")
-    private double curOfficialRate;
+    private final double curOfficialRate;
+
+    public RatesEntity(final int _id, final int curID, final String date,
+                       final String curAbbreviation,
+                       final String curScale, final String curName, final double curOfficialRate) {
+        this._id = _id;
+        this.curID = curID;
+        this.date = date;
+        this.curAbbreviation = curAbbreviation;
+        this.curScale = curScale;
+        this.curName = curName;
+        this.curOfficialRate = curOfficialRate;
+    }
 
     public int get_id() {
         return _id;
-    }
-
-    public void set_id(int _id) {
-        this._id = _id;
     }
 
     public int getCurID() {
         return curID;
     }
 
-    public void setCurID(int curID) {
-        this.curID = curID;
-    }
-
     public String getDate() {
         return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
     }
 
     public String getCurAbbreviation() {
         return curAbbreviation;
     }
 
-    public void setCurAbbreviation(String curAbbreviation) {
-        this.curAbbreviation = curAbbreviation;
-    }
-
     public String getCurScale() {
         return curScale;
-    }
-
-    public void setCurScale(String curScale) {
-        this.curScale = curScale;
     }
 
     public String getCurName() {
         return curName;
     }
 
-    public void setCurName(String curName) {
-        this.curName = curName;
-    }
-
     public double getCurOfficialRate() {
         return curOfficialRate;
-    }
-
-    public void setCurOfficialRate(double curOfficialRate) {
-        this.curOfficialRate = curOfficialRate;
     }
 }
