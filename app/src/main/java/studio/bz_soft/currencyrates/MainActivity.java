@@ -1,13 +1,17 @@
 package studio.bz_soft.currencyrates;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import studio.bz_soft.currencyrates.db.CurrenciesViewModel;
+import studio.bz_soft.currencyrates.db.RatesViewModel;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -19,11 +23,54 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (BuildConfig.DEBUG) {
+            Log.d(TAG, "onDestroy()...");
+        }
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        CurrenciesViewModel currenciesViewModel = ViewModelProviders.of(this).get(CurrenciesViewModel.class);
+        currenciesViewModel.getAllCurrenciesList().observe(this, currencies -> {
+            //TODO get list currencies
+            if (currencies != null) {
+                Log.d(TAG, "currencies != null");
+            } else {
+                if (BuildConfig.DEBUG) {
+                    Log.d(TAG, "currencies = null");
+                }
+            }
+        });
+
+
+//        Observable<LiveData<List<CurrenciesEntity>>> currenciesObserver = Observable.
+//                (currenciesViewModel.getAllCurrenciesList()) -> {};
+////                (LiveData<List<CurrenciesEntity>> listLiveData) -> {};
+//        currenciesObserver.onChanged(listLiveData);
+
+//        currenciesViewModel.getAllCurrenciesList().observe(this, currencies -> {
+//            //TODO get list currencies
+//            if (currencies != null) {
+//
+//            } else {
+//                if (BuildConfig.DEBUG) {
+//                    Log.d(TAG, "currencies = null");
+//                }
+//            }
+//        });
+
+
+        RatesViewModel ratesViewModel = ViewModelProviders.of(this).get(RatesViewModel.class);
+//        ratesViewModel.getAllRates().observe(this, rates -> {
+//            //TODO update adapter
+//        });
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(view -> {
@@ -39,6 +86,8 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.action_list_currencies:
                 startListCurrenciesActivity();
+                break;
+            case R.id.action_clear_db:
                 break;
         }
         return super.onOptionsItemSelected(item);
