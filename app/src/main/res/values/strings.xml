@@ -4,6 +4,7 @@
     <string name="title_activity_list_currencies">List of currencies</string>
 
     <string name="menu_item_list_currencies">List of currencies</string>
+    <string name="menu_item_clear_db">Clear internal DB</string>
 
     <string name="text_view_abbreviation">Currency</string>
     <string name="text_view_currency_name">Currency name</string>

@@ -5,6 +5,7 @@
     <string name="title_activity_list_currencies">Список валют</string>
 
     <string name="menu_item_list_currencies">Список валют</string>
+    <string name="menu_item_clear_db">Очистка внутренней базы данных</string>
 
     <string name="text_view_abbreviation">Код валюты</string>
     <string name="text_view_currency_name">Название валюты</string>
