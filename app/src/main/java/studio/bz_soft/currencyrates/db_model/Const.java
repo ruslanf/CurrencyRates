@@ -23,5 +23,4 @@ final class Const {
             "`curName` TEXT NOT NULL, " +
             "`curOfficialRate` NUMERIC NOT NULL " +
             ");";
-
 }
