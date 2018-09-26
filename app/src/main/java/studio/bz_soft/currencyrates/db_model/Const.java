@@ -4,7 +4,7 @@ final class Const {
 
     static final String DB_NAME = "currency_database";
 
-    final static String CREATE_TABLE_CURRENCIES = "CREATE TABLE IF NOT EXISTS `Currencies` " +
+    static final String CREATE_TABLE_CURRENCIES = "CREATE TABLE IF NOT EXISTS `Currencies` " +
             "( `_id` INTEGER PRIMARY KEY AUTOINCREMENT, " +
             "`curID` INTEGER NOT NULL, " +
             "`curParentID` INTEGER NOT NULL, " +
@@ -14,7 +14,7 @@ final class Const {
             "`curQuotName` TEXT NOT NULL " +
             ");";
 
-    final static String CREATE_TABLE_RATES = "CREATE TABLE IF NOT EXISTS `Rates` " +
+    static final String CREATE_TABLE_RATES = "CREATE TABLE IF NOT EXISTS `Rates` " +
             "( `_id` INTEGER PRIMARY KEY AUTOINCREMENT, " +
             "`curID` INTEGER NOT NULL, " +
             "`date` TEXT NOT NULL, " +
