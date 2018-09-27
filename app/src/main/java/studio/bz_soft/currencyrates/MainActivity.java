@@ -2,6 +2,7 @@ package studio.bz_soft.currencyrates;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -17,8 +18,10 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
+    private Intent intent;
+
     private void startListCurrenciesActivity() {
-        Intent intent = new Intent(this, ListCurrenciesActivity.class);
+        intent.setClass(this, ListCurrenciesActivity.class);
         startActivity(intent);
     }
 
@@ -34,20 +37,29 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        intent = getIntent();
+        String action = intent.getAction();
+        Uri data = intent.getData();
+        if (BuildConfig.DEBUG) {
+            Log.d(TAG, "action - " + action);
+            Log.d(TAG, "data - " + data);
+        }
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         CurrenciesViewModel currenciesViewModel = ViewModelProviders.of(this).get(CurrenciesViewModel.class);
-        currenciesViewModel.getAllCurrenciesList().observe(this, currencies -> {
-            //TODO get list currencies
-            if (currencies != null) {
-                Log.d(TAG, "currencies != null");
-            } else {
-                if (BuildConfig.DEBUG) {
-                    Log.d(TAG, "currencies = null");
-                }
-            }
-        });
+//        currenciesViewModel.getAllCurrenciesList().observe(this, currencies -> {
+//            //TODO get list currencies
+//            if (currencies != null) {
+//                Log.d(TAG, "currencies != null");
+//            } else {
+//                if (BuildConfig.DEBUG) {
+//                    Log.d(TAG, "currencies = null");
+//                }
+//            }
+//        });
 
 
 //        Observable<LiveData<List<CurrenciesEntity>>> currenciesObserver = Observable.
@@ -73,12 +85,7 @@ public class MainActivity extends AppCompatActivity {
 //        });
 
         FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(view -> {
-            Intent intent = new Intent(this, ListCurrenciesActivity.class);
-            startActivity(intent);
-//            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-        });
+        fab.setOnClickListener(view -> startListCurrenciesActivity());
     }
 
     @Override
